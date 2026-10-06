@@ -1,0 +1,6 @@
+add new task mqtt pub and sub 
+when send value from node red the system stop sending value until the values store to the new threshold
+add a eeprom function to data 
+add esp.restart to fix BH1750 
+add sd card for data logger
+

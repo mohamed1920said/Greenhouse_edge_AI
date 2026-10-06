@@ -1,0 +1,546 @@
+[
+    {
+        "id": "tab_greenhouse",
+        "type": "tab",
+        "label": "Greenhouse Dashboard",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "mqtt_in_data",
+        "type": "mqtt in",
+        "z": "tab_greenhouse",
+        "name": "MQTT IN greenhouse/data",
+        "topic": "greenhouse/data",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker_cloud",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "json_parse"
+            ]
+        ]
+    },
+    {
+        "id": "json_parse",
+        "type": "json",
+        "z": "tab_greenhouse",
+        "name": "Parse JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 380,
+        "y": 120,
+        "wires": [
+            [
+                "chg_humid",
+                "chg_lux",
+                "chg_moist",
+                "chg_flow",
+                "chg_anomaly",
+                "chg_diag",
+                "fn_states_text",
+                "dbg_payload"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_temp",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Temp Gauge",
+        "group": "ui_group_sensors",
+        "order": 1,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 50,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "18",
+        "seg2": "30",
+        "className": "",
+        "x": 840,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "chg_humid",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = humid",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humid",
+                "tot": "msg"
+            }
+        ],
+        "x": 610,
+        "y": 170,
+        "wires": [
+            [
+                "ui_gauge_humid"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_humid",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Humid Gauge",
+        "group": "ui_group_sensors",
+        "order": 2,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "40",
+        "seg2": "75",
+        "className": "",
+        "x": 850,
+        "y": 170,
+        "wires": []
+    },
+    {
+        "id": "chg_lux",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = lux",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.lux",
+                "tot": "msg"
+            }
+        ],
+        "x": 590,
+        "y": 220,
+        "wires": [
+            [
+                "ui_gauge_lux"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_lux",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Lux Gauge",
+        "group": "ui_group_sensors",
+        "order": 3,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Light",
+        "label": "lux",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 2000,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "500",
+        "seg2": "1200",
+        "className": "",
+        "x": 830,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "chg_moist",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = moist",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.moist",
+                "tot": "msg"
+            }
+        ],
+        "x": 600,
+        "y": 270,
+        "wires": [
+            [
+                "ui_gauge_moist"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_moist",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Moist Gauge",
+        "group": "ui_group_sensors",
+        "order": 4,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Soil Moisture",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "30",
+        "seg2": "70",
+        "className": "",
+        "x": 850,
+        "y": 270,
+        "wires": []
+    },
+    {
+        "id": "chg_flow",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = water_flow",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.water_flow",
+                "tot": "msg"
+            }
+        ],
+        "x": 640,
+        "y": 320,
+        "wires": [
+            [
+                "ui_gauge_flow"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_flow",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Flow Gauge",
+        "group": "ui_group_sensors",
+        "order": 5,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Water Flow",
+        "label": "(raw)",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 1,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "0.2",
+        "seg2": "0.8",
+        "className": "",
+        "x": 840,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "chg_anomaly",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = anomaly_score",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.anomaly_score",
+                "tot": "msg"
+            }
+        ],
+        "x": 650,
+        "y": 390,
+        "wires": [
+            [
+                "ui_gauge_anomaly"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_anomaly",
+        "type": "ui_gauge",
+        "z": "tab_greenhouse",
+        "name": "Anomaly Gauge",
+        "group": "ui_group_ai",
+        "order": 1,
+        "width": 6,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Anomaly Score",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 3,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "0.8",
+        "seg2": "1.2",
+        "className": "",
+        "x": 860,
+        "y": 390,
+        "wires": []
+    },
+    {
+        "id": "chg_diag",
+        "type": "change",
+        "z": "tab_greenhouse",
+        "name": "payload = diagnosis",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.diagnosis",
+                "tot": "msg"
+            }
+        ],
+        "x": 610,
+        "y": 440,
+        "wires": [
+            [
+                "ui_text_diag"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_diag",
+        "type": "ui_text",
+        "z": "tab_greenhouse",
+        "group": "ui_group_ai",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "Diagnosis Text",
+        "label": "Diagnosis",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 850,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "fn_states_text",
+        "type": "function",
+        "z": "tab_greenhouse",
+        "name": "Build ON/OFF state strings",
+        "func": "function onoff(v){\n  return (Number(v) === 1) ? \"ON\" : \"OFF\";\n}\n\nconst p = msg.payload || {};\n\nreturn [\n  { payload: onoff(p.heater_state) },\n  { payload: onoff(p.fan_state) },\n  { payload: onoff(p.pump_state) }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 510,
+        "wires": [
+            [
+                "ui_text_heater"
+            ],
+            [
+                "ui_text_fan"
+            ],
+            [
+                "ui_text_pump"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_heater",
+        "type": "ui_text",
+        "z": "tab_greenhouse",
+        "group": "ui_group_states",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "name": "Heater State",
+        "label": "Heater",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 860,
+        "y": 490,
+        "wires": []
+    },
+    {
+        "id": "ui_text_fan",
+        "type": "ui_text",
+        "z": "tab_greenhouse",
+        "group": "ui_group_states",
+        "order": 2,
+        "width": 4,
+        "height": 1,
+        "name": "Fan State",
+        "label": "Fan",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 850,
+        "y": 530,
+        "wires": []
+    },
+    {
+        "id": "ui_text_pump",
+        "type": "ui_text",
+        "z": "tab_greenhouse",
+        "group": "ui_group_states",
+        "order": 3,
+        "width": 4,
+        "height": 1,
+        "name": "Pump State",
+        "label": "Pump",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 860,
+        "y": 570,
+        "wires": []
+    },
+    {
+        "id": "dbg_payload",
+        "type": "debug",
+        "z": "tab_greenhouse",
+        "name": "DEBUG full payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "mqtt_broker_cloud",
+        "type": "mqtt-broker",
+        "name": "CLOUD MQTT (configure me)",
+        "broker": "da5e9c9f3af6499b92bdd5819d675d8c.s1.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "tls_config",
+        "clientid": "NodeRED_Greenhouse",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group_sensors",
+        "type": "ui_group",
+        "name": "Sensors",
+        "tab": "ui_tab_greenhouse",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_ai",
+        "type": "ui_group",
+        "name": "AI / Diagnostics",
+        "tab": "ui_tab_greenhouse",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_states",
+        "type": "ui_group",
+        "name": "Actuators State",
+        "tab": "ui_tab_greenhouse",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "tls_config",
+        "type": "tls-config",
+        "name": "TLS (configure if needed)",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "ui_tab_greenhouse",
+        "type": "ui_tab",
+        "name": "Greenhouse",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "984f4a26d70168dd",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
